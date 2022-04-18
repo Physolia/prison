@@ -85,15 +85,17 @@ ecm_generate_headers(Prison_CamelCase_HEADERS
     HEADER_NAMES
     AbstractBarcode
     Prison
-    PREFIX Prison
     REQUIRED_HEADERS Prison_HEADERS
 )
 
-install(FILES
-    ${Prison_HEADERS}
-    DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/Prison/prison
-    COMPONENT Devel
+# So that the headers are found at build time
+file(COPY
+        ${Prison_HEADERS}
+        ${Prison_CamelCase_HEADERS}
+        ${CMAKE_CURRENT_BINARY_DIR}/prison_export.h
+    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/build_include_dir/Prison
 )
+target_include_directories(KF5Prison PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/build_include_dir>")
 
 # To keep backwards compatibility we stick with this layout for KF5,
 # and use the Prison/Prison and Prison/prison layout for KF6
